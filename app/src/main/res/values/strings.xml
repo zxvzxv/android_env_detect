@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EnvDetect</string>
+    <string name="btn_detect">开始检测</string>
+    <string name="btn_copy">复制到剪贴板</string>
+    <string name="hint_result">点击「开始检测」按钮采集环境特征数据</string>
+    <string name="detecting">正在检测中…</string>
+    <string name="copy_success">已复制到剪贴板</string>
+</resources>

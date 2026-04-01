@@ -1,0 +1,2 @@
+-keep class com.envdetect.detector.** { *; }
+-keep class android.os.SystemProperties { *; }
