@@ -25,6 +25,7 @@ public class HookDetector {
             "org.lsposed.manager",
             "com.solohsu.android.edxp.manager",
             "io.va.exposed",
+            "io.va.exposed64",
             "com.android.vendinern"
     };
 

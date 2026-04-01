@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.hardware.camera2.CameraManager;
@@ -57,8 +58,6 @@ public class EmulatorDetector {
             // MicroVirt (逍遥)
             "/system/bin/microvirt-prop",
             "/system/bin/microvirtd",
-            "/data/data/com.microvirt.market",
-            "/data/data/com.microvirt.toolst",
             "/dev/nemuguest",
             "/system/lib/libnemuVMprop.so",
             // Nox (夜神)
@@ -76,9 +75,6 @@ public class EmulatorDetector {
             "/system/bin/duosconfig",
             // MEMU / MUMU (网易 MuMu)
             "/system/etc/mumu-configs/device-prop-configs/mumu.config",
-            "/data/data/com.mumu.launcher",
-            "/data/data/com.mumu.store",
-            "/data/data/com.netease.mumu.cloner",
             "/system/etc/xxzs_prop.sh",
             // BlueStacks
             "/boot/bstsetup.env",
@@ -86,11 +82,8 @@ public class EmulatorDetector {
             "/system/xbin/bstk",
             "/system/bin/bstshutdown",
             "/data/bluestacks.prop",
-            "/data/data/com.bluestacks.appmart",
-            "/data/data/com.bluestacks.home",
             "/sys/module/bstinput",
             "/sys/class/misc/bstXqpb",
-            "/data/data/com.anrovmconfig",
             // VirtualBox
             "/dev/vboxguest",
             "/dev/vboxuser",
@@ -116,7 +109,6 @@ public class EmulatorDetector {
             // Dundi (独蜂)
             "/init.dundi.rc",
             "/system/etc/init.dundi.sh",
-            "/data/data/com.ddmnq.dundidevhelper",
             // Andy
             "/init.andy.cloud.rc",
             // XiaoPi / XCPlayer / LYBox
@@ -128,6 +120,36 @@ public class EmulatorDetector {
             "/vendor/bin/init.tencent.sh",
             // Windroye (文卓爷)
             "/system/bin/windroyed",
+    };
+
+    private static final String[] EMULATOR_PACKAGES = {
+            // MicroVirt (逍遥)
+            "com.microvirt.market",
+            "com.microvirt.toolst",
+            "com.microvirt.installer",
+            // MuMu (网易)
+            "com.mumu.launcher",
+            "com.mumu.store",
+            "com.netease.mumu.cloner",
+            // BlueStacks
+            "com.bluestacks.appmart",
+            "com.bluestacks.home",
+            "com.bluestacks.settings",
+            "com.anrovmconfig",
+            // Nox (夜神)
+            "com.bignox.google.installer",
+            "com.bignox.app.store.hd",
+            "com.bignox.appcenter",
+            // Dundi (独蜂)
+            "com.ddmnq.dundidevhelper",
+            // LDPlayer (雷电)
+            "com.ldmnq.launcher3",
+            "com.ldmnq.dashboard",
+            // MEmu
+            "com.microvirt.memuime",
+            // Genymotion
+            "com.genymotion.superuser",
+            "com.genymotion.genyd",
     };
 
     private static final String[] EMULATOR_MOUNT_INDICATORS = {
@@ -183,6 +205,9 @@ public class EmulatorDetector {
 
             List<String> emulatorFiles = checkEmulatorFiles();
             result.put("emulator_files_found", new JSONArray(emulatorFiles));
+
+            List<String> emulatorApps = checkEmulatorPackages(context);
+            result.put("emulator_apps_found", new JSONArray(emulatorApps));
 
             List<String> mountIndicators = checkMountIndicators();
             result.put("emulator_mount_indicators", new JSONArray(mountIndicators));
@@ -241,6 +266,19 @@ public class EmulatorDetector {
                     found.add(path);
                 }
             } catch (Exception ignored) {
+            }
+        }
+        return found;
+    }
+
+    private static List<String> checkEmulatorPackages(Context context) {
+        List<String> found = new ArrayList<>();
+        PackageManager pm = context.getPackageManager();
+        for (String pkg : EMULATOR_PACKAGES) {
+            try {
+                pm.getPackageInfo(pkg, 0);
+                found.add(pkg);
+            } catch (PackageManager.NameNotFoundException ignored) {
             }
         }
         return found;
