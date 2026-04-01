@@ -57,6 +57,12 @@ public class EnvDetector {
             }
 
             try {
+                result.put("auto_tool", AutoToolDetector.detect(context));
+            } catch (Exception e) {
+                result.put("auto_tool", errorJson("AutoToolDetector", e));
+            }
+
+            try {
                 result.put("system_props", SystemPropCollector.collect(context));
             } catch (Exception e) {
                 result.put("system_props", errorJson("SystemPropCollector", e));

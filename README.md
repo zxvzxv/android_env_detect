@@ -20,9 +20,10 @@ gradle assembleDebug
 
 | 模块 | 类名 | 说明 |
 |------|------|------|
-| Root 检测 | `RootDetector` | su 二进制、Root 管理应用、特征文件、Build Tags、系统分区读写、su 可执行性、SELinux 状态 |
-| 模拟器检测 | `EmulatorDetector` | Build 指纹、设备特征文件、系统属性、电话/IMEI、传感器、电池、CPU 架构、蓝牙/摄像头 |
+| Root 检测 | `RootDetector` | 35+ su 路径、Root 管理应用、特征文件、Magisk 文件、Build Tags、系统分区读写、su 可执行性、SELinux 状态 |
+| 模拟器检测 | `EmulatorDetector` | Build 指纹、90+ 设备特征文件（覆盖雷电/夜神/MuMu/BlueStacks/Genymotion 等）、挂载点检测、系统属性、电话/IMEI、传感器、电池、CPU 架构、蓝牙/摄像头 |
 | Hook 检测 | `HookDetector` | Xposed（包名/文件/调用栈/类加载）、Frida（端口/maps/进程/文件）、Substrate、可疑 native 库 |
+| 自动化工具检测 | `AutoToolDetector` | /data/local/tmp 截图/投屏工具文件（minicap/scrcpy/vysor 等）、35+ 模拟点击/自动化应用（按键精灵/AutoJS/触动精灵等） |
 | 系统属性 | `SystemPropCollector` | Build 信息、50+ 系统属性、设备标识、网络信息、屏幕参数、内存/存储 |
 
 ## 快速集成
@@ -98,6 +99,10 @@ JSONObject data = EnvDetector.detectAsJson(context);
     "substrate_installed": false,
     "suspicious_native_libs": []
   },
+  "auto_tool": {
+    "suspicious_tmp_files": [],
+    "auto_tool_apps": []
+  },
   "system_props": {
     "build": { "...": "..." },
     "props": { "...": "..." },
@@ -137,6 +142,7 @@ app/src/main/java/com/envdetect/
     ├── RootDetector.java          # Root 环境检测
     ├── EmulatorDetector.java      # 模拟器/虚拟机检测
     ├── HookDetector.java          # Hook 框架检测
+    ├── AutoToolDetector.java      # 截图/模拟点击工具检测
     └── SystemPropCollector.java   # 系统属性采集
 ```
 

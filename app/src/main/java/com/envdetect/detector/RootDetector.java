@@ -22,14 +22,35 @@ public class RootDetector {
             "/sbin/su",
             "/system/su",
             "/system/bin/.ext/.su",
+            "/system/bin/.ext/su",
+            "/system/bin/.hid/su",
+            "/system/bin/cph_su",
+            "/system/bin/failsafe/su",
             "/system/usr/we-need-root/su",
+            "/system/sd/xbin/su",
             "/system/xbin/mu",
+            "/system/xbin/mu_bak",
+            "/system/xbin/bstk/su",
+            "/system/xbin/sugote",
+            "/system/xbin/sugote-mksh",
+            "/system/xbin/supolicy",
+            "/system/xbin/daemonsu",
+            "/system_ext/bin/su",
             "/vendor/bin/su",
+            "/vendor/xbin/su",
+            "/odm/bin/su",
+            "/product/bin/su",
             "/su/bin/su",
             "/data/local/su",
             "/data/local/bin/su",
             "/data/local/xbin/su",
+            "/data/su",
+            "/dev/su",
             "/cache/su",
+            "/sbin/.mianju",
+            "/sbin/nvsu",
+            "/apex/com.android.runtime/bin/su",
+            "/apex/com.android.art/bin/su",
             "/magisk/.core/bin/su"
     };
 
@@ -59,20 +80,30 @@ public class RootDetector {
 
     private static final String[] ROOT_FILES = {
             "/system/app/Superuser.apk",
+            "/system/app/SuperUser/SuperUser.apk",
             "/system/app/SuperSU.apk",
             "/system/app/SuperSU",
             "/system/app/superuser.apk",
             "/system/app/KingUser.apk",
-            "/data/data/com.topjohnwu.magisk",
-            "/data/adb/magisk",
-            "/data/magisk",
-            "/cache/magisk.log",
-            "/system/xbin/daemonsu",
+            "/system/.supersu",
             "/system/etc/init.d/99SuperSUDaemon",
-            "/system/bin/.ext/.su",
             "/system/etc/.has_su_daemon",
             "/system/etc/.installed_su_daemon",
+            "/system/addon.d/99-magisk.sh",
+            "/data/data/com.topjohnwu.magisk",
             "/dev/com.koushikdutta.superuser.daemon/"
+    };
+
+    private static final String[] MAGISK_FILES = {
+            "/data/adb/magisk",
+            "/data/magisk",
+            "/data/magisk.apk",
+            "/cache/magisk.log",
+            "/cache/.disable_magisk",
+            "/dev/magisk/img",
+            "/sbin/.magisk",
+            "/system/etc/init/magisk",
+            "/system/etc/init/magisk.rc"
     };
 
     public static JSONObject detect(Context context) {
@@ -87,6 +118,9 @@ public class RootDetector {
 
             List<String> rootFiles = checkRootFiles();
             result.put("root_files_found", new JSONArray(rootFiles));
+
+            List<String> magiskFiles = checkMagiskFiles();
+            result.put("magisk_files_found", new JSONArray(magiskFiles));
 
             result.put("test_keys", checkTestKeys());
             result.put("system_rw", checkSystemRW());
@@ -143,6 +177,19 @@ public class RootDetector {
     private static List<String> checkRootFiles() {
         List<String> found = new ArrayList<>();
         for (String path : ROOT_FILES) {
+            try {
+                if (new File(path).exists()) {
+                    found.add(path);
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        return found;
+    }
+
+    private static List<String> checkMagiskFiles() {
+        List<String> found = new ArrayList<>();
+        for (String path : MAGISK_FILES) {
             try {
                 if (new File(path).exists()) {
                     found.add(path);
