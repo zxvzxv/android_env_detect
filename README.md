@@ -2,6 +2,8 @@
 
 ## 说明
 
+[![Android CI](https://github.com/zxvzxv/android_env_detect/actions/workflows/android.yml/badge.svg)](https://github.com/zxvzxv/android_env_detect/actions/workflows/android.yml)
+
 ### 编译
 先安装好java、android sdk、gradle环境
 ```
