@@ -2,7 +2,8 @@
 
 ## 说明
 
-[![Android CI](https://github.com/zxvzxv/android_env_detect/actions/workflows/android.yml/badge.svg)](https://github.com/zxvzxv/android_env_detect/actions/workflows/android.yml)
+[![Android CI](https://github.com/zxvzxv/android_env_detect/actions/workflows/android.yml/badge.svg?event=push)](https://github.com/zxvzxv/android_env_detect/actions/workflows/android.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/zxvzxv/android_env_detect)](https://github.com/zxvzxv/android_env_detect/releases/latest)
 
 ### 编译
 先安装好java、android sdk、gradle环境
